@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Xamarin.Forms;
+using TrackMyWalks.Pages;
 
 namespace TrackMyWalks
 {
@@ -13,25 +14,20 @@ namespace TrackMyWalks
         {
             InitializeComponent();
 
-            // The root page of your application
-
-            var content = new ContentPage
+            // Check the Target OS Platform
+            if (Device.RuntimePlatform.Equals("Android"))
             {
-                Title = "TrackMyWalks",
-                Content = new StackLayout
+                MainPage = new SplashPage();
+            }
+            else
+            {
+                // The root page of your application
+                var navPage = new NavigationPage(new TrackMyWalks.Pages.WalksPage()
                 {
-                    VerticalOptions = LayoutOptions.Center,
-                    Children =
-                    { new Label
-                        {
-                            HorizontalTextAlignment = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!"
-                        }
-                    }
-                }
-            };
-
-            MainPage = new NavigationPage(content);
+                    Title = "Track My Walks"
+                });
+                MainPage = navPage;
+            }
         }
 
         protected override void OnStart()
