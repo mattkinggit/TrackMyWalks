@@ -6,6 +6,7 @@ using System.Text;
 
 using Xamarin.Forms;
 using TrackMyWalks.Models;
+using TrackMyWalks.ViewModels;
 
 namespace TrackMyWalks.Pages
 {
@@ -14,6 +15,9 @@ namespace TrackMyWalks.Pages
         public WalkTrailPage(WalkEntries walkItem)
         {
             Title = "Walks Trail";
+
+            // Declare and intialize our Model Binding Context
+            BindingContext = new WalksTrailViewModel(walkItem);
 
             var beginTrailWalk = new Button
             {
@@ -34,40 +38,45 @@ namespace TrackMyWalks.Pages
             var walkTrailImage = new Image()
             {
                 Aspect = Aspect.AspectFill,
-                Source = walkItem.ImageUrl
             };
+
+            walkTrailImage.SetBinding(Image.SourceProperty, "WalkEntry.ImageUrl");
 
             var trailNameLabel = new Label()
             {
                 FontSize = 28,
                 FontAttributes = FontAttributes.Bold,
                 TextColor = Color.Black,
-                Text = walkItem.Title
             };
+
+            trailNameLabel.SetBinding(Label.TextProperty, "WalkEntry.Title");
 
             var trailKilometersLabel = new Label()
             {
                 FontSize = 12,
                 FontAttributes = FontAttributes.Bold,
                 TextColor = Color.Black,
-                Text = $"Length: {walkItem.Kilometers} km"
             };
+
+            trailKilometersLabel.SetBinding(Label.TextProperty, "WalkEntry.Kilometers", stringFormat: "Length: {0} km");
 
             var trailDifficultyLabel = new Label()
             {
                 FontSize = 12,
                 FontAttributes = FontAttributes.Bold,
                 TextColor = Color.Black,
-                Text = $"Difficulty: {walkItem.Difficulty}"
             };
+
+            trailDifficultyLabel.SetBinding(Label.TextProperty, "WalkEntry.Difficulty", stringFormat: "Difficulty: {0}");
 
             var trailFullDescription = new Label()
             {
                 FontSize = 11,
                 TextColor = Color.Black,
-                Text = $"{walkItem.Notes}",
                 HorizontalOptions = LayoutOptions.FillAndExpand
             };
+
+            trailFullDescription.SetBinding(Label.TextProperty, "WalkEntry.Notes");
 
             this.Content = new ScrollView
             {
